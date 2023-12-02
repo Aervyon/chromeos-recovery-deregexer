@@ -24,17 +24,18 @@ func main() {
 	bytes, _ := io.ReadAll(file)
 	var recovery []Recovery
 
-	spaces := regexp.MustCompile(`\s.*$`)
+	// spaces := regexp.MustCompile(`\s.*$`)
 	start := regexp.MustCompile(`^\^|^\(`)
-	end := regexp.MustCompile(`\..*$|-.*$`)
-	end2 := regexp.MustCompile(`\?$|\[$`)
+	end := regexp.MustCompile(`-.{0,2}.$|\..*|\\.*$| \(.*$|\s$`)
+	end2 := regexp.MustCompile(`\?$|\[.*$`)
 
 	json.Unmarshal(bytes, &recovery)
 	for i := 0; i < len(recovery); i++ {
-		recovery[i].HwIDMatch = spaces.ReplaceAllString(recovery[i].HwIDMatch, "")
+		// recovery[i].HwIDMatch = spaces.ReplaceAllString(recovery[i].HwIDMatch, "")
 		recovery[i].HwIDMatch = start.ReplaceAllString(recovery[i].HwIDMatch, "")
 		recovery[i].HwIDMatch = end.ReplaceAllString(recovery[i].HwIDMatch, "")
 		recovery[i].HwIDMatch = end2.ReplaceAllString(recovery[i].HwIDMatch, "")
+		recovery[i].HwIDMatch = end.ReplaceAllString(recovery[i].HwIDMatch, "")
 		fmt.Println(recovery[i].HwIDMatch)
 	}
 
